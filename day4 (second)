@@ -1,0 +1,163 @@
+### Circular Queue Using Linked List:
+
+
+# Node class to represent each element in the queue
+class Node:
+    def __init__(self, data):
+        self.data = data  # Store the data
+        self.next = None  # Pointer to the next node
+
+# Circular Queue class using linked list
+class CircularQueue:
+    def __init__(self):
+        self.tail = None  # Points to the last element in the queue
+
+    # Method to check if the queue is empty
+    def is_empty(self):
+        return self.tail is None
+
+    # Method to enqueue an element
+    def enqueue(self, data):
+        new_node = Node(data)
+        if self.is_empty():
+            self.tail = new_node
+            self.tail.next = new_node  # Points to itself to form a circular structure
+        else:
+            new_node.next = self.tail.next
+            self.tail.next = new_node
+            self.tail = new_node
+        print(f"Enqueued {data}.")
+
+    # Method to dequeue an element
+    def dequeue(self):
+        if self.is_empty():
+            print("Queue is empty. Cannot dequeue.")
+            return None
+        head = self.tail.next
+        if self.tail == head:  # Only one element in the queue
+            self.tail = None
+        else:
+            self.tail.next = head.next
+        print(f"Dequeued {head.data}.")
+        return head.data
+
+    # Method to display the queue contents
+    def display(self):
+        if self.is_empty():
+            print("Queue is empty.")
+        else:
+            current = self.tail.next
+            print("Queue elements:")
+            while True:
+                print(current.data, end=" -> ")
+                current = current.next
+                if current == self.tail.next:
+                    break
+            print("Start")
+
+# Example usage of the circular queue
+cq = CircularQueue()
+cq.enqueue(10)
+cq.enqueue(20)
+cq.enqueue(30)
+
+cq.display()
+
+cq.dequeue()
+cq.display()
+
+
+### Deque (Double-Ended Queue) Using Linked List:
+
+
+# Node class to represent each element in the deque
+class Node:
+    def __init__(self, data):
+        self.data = data  # Store the data
+        self.next = None  # Pointer to the next node
+        self.prev = None  # Pointer to the previous node
+
+# Deque class using linked list
+class Deque:
+    def __init__(self):
+        self.front = None  # Points to the front of the deque
+        self.rear = None   # Points to the rear of the deque
+
+    # Method to check if the deque is empty
+    def is_empty(self):
+        return self.front is None
+
+    # Method to add an element at the front
+    def add_front(self, data):
+        new_node = Node(data)
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            new_node.next = self.front
+            self.front.prev = new_node
+            self.front = new_node
+        print(f"Added {data} to the front.")
+
+    # Method to add an element at the rear
+    def add_rear(self, data):
+        new_node = Node(data)
+        if self.is_empty():
+            self.front = self.rear = new_node
+        else:
+            new_node.prev = self.rear
+            self.rear.next = new_node
+            self.rear = new_node
+        print(f"Added {data} to the rear.")
+
+    # Method to remove an element from the front
+    def remove_front(self):
+        if self.is_empty():
+            print("Deque is empty. Cannot remove from front.")
+            return None
+        removed_data = self.front.data
+        if self.front == self.rear:  # Only one element in the deque
+            self.front = self.rear = None
+        else:
+            self.front = self.front.next
+            self.front.prev = None
+        print(f"Removed {removed_data} from the front.")
+        return removed_data
+
+    # Method to remove an element from the rear
+    def remove_rear(self):
+        if self.is_empty():
+            print("Deque is empty. Cannot remove from rear.")
+            return None
+        removed_data = self.rear.data
+        if self.front == self.rear:  # Only one element in the deque
+            self.front = self.rear = None
+        else:
+            self.rear = self.rear.prev
+            self.rear.next = None
+        print(f"Removed {removed_data} from the rear.")
+        return removed_data
+
+    # Method to display the deque contents
+    def display(self):
+        if self.is_empty():
+            print("Deque is empty.")
+        else:
+            current = self.front
+            print("Deque elements:")
+            while current:
+                print(current.data, end=" <-> ")
+                current = current.next
+            print("None")
+
+# Example usage of the deque
+dq = Deque()
+dq.add_front(10)
+dq.add_rear(20)
+dq.add_front(30)
+dq.display()
+
+dq.remove_front()
+dq.display()
+
+dq.remove_rear()
+dq.display()
