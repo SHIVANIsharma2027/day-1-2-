@@ -45,12 +45,7 @@ def postorder(root):
         print(root.val, end=" ")   # Visit node
 
 
-# Creating the following BST
-#      50
-#     /  \
-#    30   70
-#   / \   / \
-#  20 40 60 80
+
 r = Node(50)
 r = insert(r, 30)
 r = insert(r, 20)
@@ -154,12 +149,7 @@ def postorder(root):
         print(root.val, end=" ")   # Visit node
 
 
-# Creating the following BST
-#      50
-#     /  \
-#    30   70
-#   / \   / \
-#  20 40 60 80
+
 r = Node(50)
 r = insert(r, 30)
 r = insert(r, 20)
@@ -211,6 +201,7 @@ print()  # New line
 print("Final Postorder Traversal:", end=" ")
 postorder(r)
 print()  # New line
+
 
 
 
