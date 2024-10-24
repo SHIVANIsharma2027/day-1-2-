@@ -1,138 +1,83 @@
-#include <stdio.h>
-#include <stdlib.h>
+lift management system:
 
-#define MAX_FLOORS 10
-#define MAX_QUEUE_SIZE 20
+class Queue:
+    def __init__(self, max_size):
+        self.queue = []
+        self.max_size = max_size
 
+    def is_full(self):
+        return len(self.queue) == self.max_size
 
-typedef struct {
-    int front;
-    int rear;
-    int items[MAX_QUEUE_SIZE];
-} Queue;
+    def is_empty(self):
+        return len(self.queue) == 0
 
+    def enqueue(self, floor):
+        if self.is_full():
+            print("Request queue is full!")
+        else:
+            self.queue.append(floor)
 
-Queue* createQueue();
-int isFull(Queue* q);
-int isEmpty(Queue* q);
-void enqueue(Queue* q, int floor);
-int dequeue(Queue* q);
-void displayQueue(Queue* q);
-void manageLift(Queue* q);
+    def dequeue(self):
+        if self.is_empty():
+            print("No requests in the queue!")
+            return None
+        else:
+            return self.queue.pop(0)
 
-int main() {
-    Queue* queue = createQueue();
-    int choice, floor;
-
-    while (1) {
-        printf("\nLift Management System\n");
-        printf("1. Request Lift\n");
-        printf("2. Show Requests\n");
-        printf("3. Manage Lift\n");
-        printf("4. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                printf("Enter floor number (0-%d): ", MAX_FLOORS - 1);
-                scanf("%d", &floor);
-                if (floor >= 0 && floor < MAX_FLOORS) {
-                    enqueue(queue, floor);
-                    printf("Lift requested from floor %d.\n", floor);
-                } else {
-                    printf("Invalid floor number!\n");
-                }
-                break;
-            case 2:
-                displayQueue(queue);
-                break;
-            case 3:
-                manageLift(queue);
-                break;
-            case 4:
-                free(queue);
-                exit(0);
-            default:
-                printf("Invalid choice! Please try again.\n");
-        }
-    }
-
-    return 0;
-}
-
-Queue* createQueue() {
-    Queue* q = (Queue*)malloc(sizeof(Queue));
-    q->front = -1;
-    q->rear = -1;
-    return q;
-}
+    def display(self):
+        if self.is_empty():
+            print("No requests in the queue.")
+        else:
+            print("Current requests in the queue:", ' '.join(map(str, self.queue)))
 
 
-int isFull(Queue* q) {
-    return (q->rear + 1) % MAX_QUEUE_SIZE == q->front;
-}
+def manage_lift(queue):
+    while not queue.is_empty():
+        next_floor = queue.dequeue()
+        print(f"Lift moving to floor {next_floor}...")
+        # Simulating delay for moving between floors
+        import time
+        time.sleep(1)  # Simulate a delay
+        print(f"Lift arrived at floor {next_floor}.")
 
 
-int isEmpty(Queue* q) {
-    return q->front == -1;
-}
+def main():
+    max_floors = 10
+    max_queue_size = 20
+    queue = Queue(max_queue_size)
+
+    while True:
+        print("\nLift Management System")
+        print("1. Request Lift")
+        print("2. Show Requests")
+        print("3. Manage Lift")
+        print("4. Exit")
+        choice = int(input("Enter your choice: "))
+
+        if choice == 1:
+            floor = int(input(f"Enter floor number (0-{max_floors - 1}): "))
+            if 0 <= floor < max_floors:
+                queue.enqueue(floor)
+                print(f"Lift requested from floor {floor}.")
+            else:
+                print("Invalid floor number!")
+        elif choice == 2:
+            queue.display()
+        elif choice == 3:
+            manage_lift(queue)
+        elif choice == 4:
+            print("Exiting Lift Management System.")
+            break
+        else:
+            print("Invalid choice! Please try again.")
 
 
-void enqueue(Queue* q, int floor) {
-    if (isFull(q)) {
-        printf("Request queue is full!\n");
-        return;
-    }
-    if (isEmpty(q)) {
-        q->front = 0;
-    }
-    q->rear = (q->rear + 1) % MAX_QUEUE_SIZE;
-    q->items[q->rear] = floor;
-}
-
-
-int dequeue(Queue* q) {
-    if (isEmpty(q)) {
-        printf("No requests in the queue!\n");
-        return -1; // Indicating no requests
-    }
-    int floor = q->items[q->front];
-    if (q->front == q->rear) { // Queue has only one element
-        q->front = -1; // Resetting queue
-        q->rear = -1;
-    } else {
-        q->front = (q->front + 1) % MAX_QUEUE_SIZE;
-    }
-    return floor;
-}
-
-
-void displayQueue(Queue* q) {
-    if (isEmpty(q)) {
-        printf("No requests in the queue.\n");
-        return;
-    }
+if __name__ == "__main__":
+    main()
     
-    printf("Current requests in the queue: ");
-    
-    int i = q->front;
-    while (1) {
-        printf("%d ", q->items[i]);
-        if (i == q->rear) break;
-        i = (i + 1) % MAX_QUEUE_SIZE;
-    }
-    
-    printf("\n");
-}
+            
 
 
-void manageLift(Queue* q) {
-    while (!isEmpty(q)) {
-        int nextFloor = dequeue(q);
-        printf("Lift moving to floor %d...\n", nextFloor);
-        // Simulate some delay for moving between floors
-        for (int i = 0; i < 100000000; i++); // Simple delay loop
-        printf("Lift arrived at floor %d.\n", nextFloor);
-    }
-}
+
+
+      
