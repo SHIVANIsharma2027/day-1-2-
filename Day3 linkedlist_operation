@@ -1,48 +1,61 @@
-#create linkedlist:
+linkedlsit opertions( insertion, deletion)
 
-# Definition of a Node in a singly linked list
+   # Definition of a Node in a singly linked list
 class Node:
     def __init__(self, data):
-       # Data part of the node
-        self.data = data   
-        self.next = None    
+        self.data = data   # Data part of the node
+        self.next = None   # Pointer to the next node
 
 
-
-#insertion linkedlist:
-
-# Python function to insert a new node at the beginning of the
-# linked list
+# Function to insert a new node at the beginning of the linked list
 def insert_at_beginning(head, value):
-  
     # Create a new node with the given value
     new_node = Node(value)
 
-    # Set the next pointer of the new node to the current
-    # head
+    # Set the next pointer of the new node to the current head
     new_node.next = head
 
-    # Move the head to point to the new node
-    head = new_node
-
     # Return the new head of the linked list
-    return head
+    return new_node
 
 
+# Function to remove the first node of the linked list
+def remove_first_node(head):
+    if head is None:
+        return None
 
-#deletion linkedlist:
+    # Move the head pointer to the next node
+    new_head = head.next
 
-// Java Function to remove the first node
-// of the linked list
-static Node removeFirstNode(Node head)
-{
-    if (head == null)
-        return null;
+    return new_head
 
-    // Move the head pointer to the next node
-    Node temp = head;
-    head = head.next;
 
-    return head;
-}
+# Function to print the linked list
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.data, end=" -> ")
+        current = current.next
+    print("None")
 
+
+# Example usage:
+if __name__ == "__main__":
+    # Initially, the linked list is empty (head is None)
+    head = None
+
+    # Insert elements at the beginning
+    head = insert_at_beginning(head, 3)
+    head = insert_at_beginning(head, 2)
+    head = insert_at_beginning(head, 1)
+
+    print("Linked list after insertion:")
+    print_linked_list(head)
+
+    # Remove the first node
+    head = remove_first_node(head)
+
+    print("Linked list after deleting the first node:")
+    print_linked_list(head)
+
+    
