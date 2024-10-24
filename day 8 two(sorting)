@@ -1,0 +1,101 @@
+# bubble sort
+
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+arr = [64, 34, 25, 12, 22, 11, 90]
+print("Bubble Sort:", bubble_sort(arr))
+
+
+# quick sort
+
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)
+
+arr = [64, 34, 25, 12, 22, 11, 90]
+print("Quick Sort:", quick_sort(arr))
+
+
+# merge sort
+
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    
+    mid = len(arr) // 2
+    left_half = merge_sort(arr[:mid])
+    right_half = merge_sort(arr[mid:])
+    
+    return merge(left_half, right_half)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+            
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+arr = [64, 34, 25, 12, 22, 11, 90]
+print("Merge Sort:", merge_sort(arr))
+
+
+
+# dijkstra 
+
+import heapq
+
+def dijkstra(graph, start):
+    priority_queue = []
+    heapq.heappush(priority_queue, (0, start))
+    
+    shortest_distances = {node: float('inf') for node in graph}
+    shortest_distances[start] = 0
+    
+    previous_nodes = {node: None for node in graph}
+    
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+        
+        if current_distance > shortest_distances[current_node]:
+            continue
+        
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+            
+            if distance < shortest_distances[neighbor]:
+                shortest_distances[neighbor] = distance
+                previous_nodes[neighbor] = current_node
+                heapq.heappush(priority_queue, (distance, neighbor))
+    
+    return shortest_distances, previous_nodes
+
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'C': 2, 'D': 5},
+    'C': {'A': 4, 'B': 2, 'D': 1},
+    'D': {'B': 5, 'C': 1}
+}
+
+distances, previous = dijkstra(graph, 'A')
+print("Shortest distances:", distances)
+print("Previous nodes:", previous)
